@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}Todo List{% endblock %}
+
+{% block content %}
+    {% if object_list %}
+    <h1>Todo List</h1>
+    <ul>
+        <div class="todo-list">
+    {% for todo in object_list %}
+        <div class="todo-card" style="border: 1px solid #ddd; padding: 15px; margin-bottom: 15px; border-radius: 10px;">
+            <h3>
+                <a href="{% url 'todo:todo_detail' todo.id %}" style="text-decoration: none; color: #007bff;">
+                    {{ todo.title }}
+                </a>
+            </h3>
+            <p><strong>Description:</strong> {{ todo.description }}</p>
+            <p><strong>Completed:</strong>
+                {% if todo.completed %}
+                    ✅ Yes
+                {% else %}
+                    ❌ No
+                {% endif %}
+            </p>
+            <div style="margin-top: 10px;">
+                <a href="{% url 'todo:todo_update' todo.id %}" style="margin-right: 10px; color: #28a745;">✏️ Update</a>
+                <a href="{% url 'todo:todo_delete' todo.id %}" style="color: #dc3545;">🗑️ Delete</a>
+            </div>
+        </div>
+    {% empty %}
+        <p>No todos found.</p>
+    {% endfor %}
+</div>
+
+
+    </ul>
+    {% else %}
+    <h1>No Todo Available</h1>
+    {% endif %}
+{% endblock %}
+
+

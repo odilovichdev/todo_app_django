@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}Todo Detail{% endblock %}
+
+{% block content %}
+
+<div style="max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); font-family: sans-serif;">
+
+    <h2 style="color: #007bff;">📝 {{ object.title }}</h2>
+
+    <p style="font-size: 16px; line-height: 1.6;">
+        <strong>Description:</strong><br>
+        {{ object.description }}
+    </p>
+
+    <h1>Todo SubTask List</h1>
+    {% for subtask in todo.subtasks.all %}
+        <li>
+            <a href="{% url 'todo:todo_detail' todo.id %}">
+                <p>{{subtask.title}} - {{subtask.description}}</p>
+            </a>
+            <p>{{ subtask.completed }}</p>
+            <p>Created: {{subtask.created_at|date:'Y-n-d'}}</p>
+        </li>
+
+    <form method="post" action="{% url 'todo:subtask_complete' todo.id subtask.id %}">
+        {% csrf_token %}
+        <button type="submit">Complete</button>
+    </form>
+    <a href="{% url 'todo:subtask_update' todo.id subtask.id %}">Edit</a>
+    <a href="{% url 'todo:subtask_delete' todo.id subtask.id %}">Delete</a>
+
+    {% endfor %}
+
+<!--    <p style="font-size: 16px;">-->
+<!--        <strong>Completed:</strong>-->
+<!--        {% if object.completed %}-->
+<!--            <span style="color: green; font-weight: bold;">✔️ Yes</span>-->
+<!--        {% else %}-->
+<!--            <span style="color: red; font-weight: bold;">❌ No</span>-->
+<!--        {% endif %}-->
+<!--    </p>-->
+
+<!--    <div style="margin-top: 20px;">-->
+<!--        <a href="{% url 'todo:todo_update' object.id %}" style="margin-right: 15px; color: #28a745; text-decoration: none;">✏️ Update</a>-->
+<!--        <a href="{% url 'todo:todo_delete' object.id %}" style="color: #dc3545; text-decoration: none;">🗑️ Delete</a>-->
+<!--        <a href="{% url 'todo:todo_list' %}" style="margin-left: 15px; color: #6c757d; text-decoration: none;">🔙 Back to list</a>-->
+<!--    </div>-->
+
+</div>
+
+{% endblock %}
